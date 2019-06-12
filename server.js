@@ -19,19 +19,11 @@ app.use(function (req, res, next) {
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended: false}));
 
-//Angular Dist output folder
-app.use(express.static(path.join(__dirname, 'dist/Compiler')));
-
-//Send all other requests to the Angular app
-app.get('/', (req, res)=> {
-    res.sendFile(path.join(__dirname, 'dist/Compiler/index.html'));
-});
-
 
 //Compile code
 app.post('/compile',function(req,res,err){
-    var code = req.body.Code;
-    Execute.executeFile(res,code);
+    var data = req.body;
+    Execute.executeFile(res,data);
 });
 
 

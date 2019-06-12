@@ -1,5 +1,8 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import {Http} from "@angular/http"
+import { Component, OnInit, Inject, ElementRef } from '@angular/core';
+import {Http} from "@angular/http";
+import { ViewChild } from '@angular/core';
+import bsCustomFileInput from 'bs-custom-file-input';
+
 
 @Component({
   selector: 'app-compiler',
@@ -7,15 +10,19 @@ import {Http} from "@angular/http"
   styleUrls: ['./compiler.component.css']
 })
 export class CompilerComponent implements OnInit {
+
+  baseURL = 'http://localhost:1818';
   output = "";
   size = "medium";
   background = "white";
   code = "";
+  private fileText;
 
 
   constructor(@Inject(Http) public _http) { }
 
   ngOnInit() {
+    bsCustomFileInput.init();
   }
 
   TabOn() {
@@ -24,9 +31,25 @@ export class CompilerComponent implements OnInit {
   }
 
   compile() {
-    this._http.post('http://localhost:1818/compile',{Code:this.code}).subscribe(result => {
+    this._http.post(this.baseURL+'/compile',{Code:this.code, FileName: "uclid" + Date.now() + ".ucl"}).subscribe(result => {
       this.output = result._body;
     });
   }
 
+
+  fileUpload(event) {
+    var reader = new FileReader();
+    reader.readAsText(event.srcElement.files[0]);
+    var me = this;
+    reader.onload = function () {
+      me.fileText = reader.result;
+    }
+  }
+
+  compileFile(){
+    
+    this._http.post(this.baseURL+'/compile', {Code:this.fileText, FileName: "upload" + Date.now() + ".ucl"}).subscribe(result => {
+      this.output = result._body;
+    });
+  }
 }
