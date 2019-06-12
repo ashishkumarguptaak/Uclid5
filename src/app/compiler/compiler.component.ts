@@ -47,7 +47,8 @@ export class CompilerComponent implements OnInit {
   }
 
   compileFile(){
-    
+    if(this.fileText === undefined)
+    return ;
     this._http.post(this.baseURL+'/compile', {Code:this.fileText, FileName: "upload" + Date.now() + ".ucl"}).subscribe(result => {
       this.output = result._body;
     });
