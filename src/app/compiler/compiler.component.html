@@ -4,7 +4,7 @@
   </div>
 </nav>
 <section>
-    <div class="container mb-5">
+    <div class="container mb-3">
         <div class="input-group">
             <div class="input-group-prepend">
               <span (click)="compileFile()" class="input-group-text btn" id="fileAddOne">Upload</span>
@@ -15,6 +15,12 @@
               <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
             </div>
           </div>
+    </div>
+    <div class="container mb-3" *ngIf="uploadSpinner">
+      <button class="btn btn-primary" type="button" disabled>
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Loading...
+      </button>
     </div>
     <div class="container mb-2">
         <select class="browser-default custom-select col-md-3" name="size" [(ngModel)]="size">
@@ -35,6 +41,12 @@
             (keydown.tab)="TabOn($event)"></textarea>
         </div>
         <button class="btn btn-info mt-3" (click)="compile()">Compile</button>
+    </div>
+    <div class="container mb-3" *ngIf="compileSpinner">
+      <button class="btn btn-primary" type="button" disabled>
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Loading...
+      </button>
     </div>
     <div class="container" *ngIf="output">
       <div>
